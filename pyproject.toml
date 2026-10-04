@@ -4,10 +4,14 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
-    { name = "Guilherme Shibuya", email = "gyudishibuya@gmail.com" }
+    { name = "Guilherme Shibuya", email = "contato.guishibuya@gmail.com" }
 ]
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "ipykernel>=7.3.0",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.7.2",
+]
 
 [project.scripts]
 customer-churn = "customer_churn:main"
