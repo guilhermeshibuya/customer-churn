@@ -9,8 +9,10 @@ authors = [
 requires-python = ">=3.10"
 dependencies = [
     "ipykernel>=7.3.0",
+    "matplotlib>=3.10.9",
     "pandas>=2.3.3",
     "scikit-learn>=1.7.2",
+    "seaborn>=0.13.2",
 ]
 
 [project.scripts]
