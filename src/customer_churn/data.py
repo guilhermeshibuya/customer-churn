@@ -3,6 +3,15 @@ from pathlib import Path
 
 
 def load_dataset(file_path: str | Path) -> pd.DataFrame:
+    """
+    Load a dataset from a CSV file into a pandas DataFrame.
+
+    Args:
+        file_path (str | Path): The path to the CSV file.
+
+    Returns:
+        pd.DataFrame: The loaded dataset as a pandas DataFrame.
+    """
     try:
         df = pd.read_csv(file_path)
         return df
@@ -19,6 +28,19 @@ def split_dataset(
     test_size: float = 0.1,
     random_state: int = 42,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, pd.Series]:
+    """
+    Split the dataset into training, validation, and test sets.
+
+    Args:
+        data (pd.DataFrame): The DataFrame to split.
+        target_column (str): The name of the target column.
+        validation_size (float): The proportion of the dataset to include in the validation set.
+        test_size (float): The proportion of the dataset to include in the test set.
+        random_state (int): Random seed for reproducibility.
+
+    Returns:
+        tuple: A tuple containing the training, validation, and test sets for features and target.
+    """
     from sklearn.model_selection import train_test_split
 
     if target_column not in data.columns:
