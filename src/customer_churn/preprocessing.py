@@ -65,25 +65,17 @@ def transform_features(preprocessor: ColumnTransformer, data: pd.DataFrame):
     return transformed_data
 
 
-def build_training_pipeline(config: dict):
+def build_training_pipeline(preprocessor: ColumnTransformer, model: object) -> Pipeline:
     """
-    Builds a training pipeline that includes preprocessing and model initialization based on the provided configuration.
+    Builds a training pipeline that combines the preprocessor and the model.
 
     Args:
-        config (dict): A dictionary containing the configuration for preprocessing and model initialization.
+        preprocessor (ColumnTransformer): The fitted preprocessor.
+        model (object): The machine learning model.
 
     Returns:
-        Pipeline: A scikit-learn Pipeline that includes preprocessing and model initialization.
+        Pipeline: A scikit-learn Pipeline that applies the preprocessor and then the model.
     """
-    preprocessor = build_preprocessor(
-        categorical_features=config["categorical_features"],
-        numerical_features=config["numerical_features"],
-    )
-
-    classifier = create_model(config["model"])
-
-    pipeline = Pipeline(
-        steps=[("preprocessor", preprocessor), ("classifier", classifier)]
-    )
+    pipeline = Pipeline(steps=[("preprocessor", preprocessor), ("classifier", model)])
 
     return pipeline
