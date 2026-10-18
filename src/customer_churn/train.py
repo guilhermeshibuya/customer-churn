@@ -5,17 +5,17 @@ import pandas as pd
 import joblib
 
 
-def build_model(config: dict):
+def build_model(model_config: dict):
     """
     Builds a model based on the provided configuration.
 
     Args:
-        config (dict): A dictionary containing the configuration for model initialization.
+        model_config (dict): A dictionary with the model "name" and its "params".
 
     Returns:
         A scikit-learn model initialized based on the provided configuration.
     """
-    model = create_model(config["model"])
+    model = create_model(model_config)
     return model
 
 
