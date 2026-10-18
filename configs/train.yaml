@@ -1,0 +1,18 @@
+raw_data_path: data/raw/customer-churn-dataset.csv
+processed_data_path: data/processed
+model_output_path: models/customer_churn_pipeline.joblib
+
+target_column: Churn
+id_column: customerID
+
+test_size: 0.1
+validation_size: 0.2
+random_state: 42
+cv_folds: 5
+
+model:
+  name: random_forest
+  params:
+    n_estimators: 200
+    random_state: 42
+    class_weight: balanced
