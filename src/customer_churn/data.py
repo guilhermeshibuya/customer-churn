@@ -14,6 +14,8 @@ def load_dataset(file_path: str | Path) -> pd.DataFrame:
     """
     try:
         df = pd.read_csv(file_path)
+        df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
+        df = df.dropna(subset=["TotalCharges"])
         return df
     except FileNotFoundError:
         raise FileNotFoundError(f"The file at {file_path} was not found.")
@@ -63,6 +65,32 @@ def split_dataset(
     )
 
     return X_train, X_val, X_test, y_train, y_val, y_test
+
+
+TARGET_CLASSES = {"No": 0, "Yes": 1}
+
+
+def encode_target(y: pd.Series) -> pd.Series:
+    """
+    Encode the target labels into binary integers.
+
+    Args:
+        y (pd.Series): The target labels.
+
+    Returns:
+        pd.Series: The encoded target as 0/1 integers.
+    """
+    if not (pd.api.types.is_object_dtype(y) or pd.api.types.is_string_dtype(y)):
+        return y
+
+    unknown_labels = set(y.unique()) - set(TARGET_CLASSES)
+    if unknown_labels:
+        raise ValueError(
+            f"Unsupported target labels: {sorted(unknown_labels)}. "
+            f"Expected only: {sorted(TARGET_CLASSES)}."
+        )
+
+    return y.map(TARGET_CLASSES).astype(int)
 
 
 def get_categorical_columns(df: pd.DataFrame) -> list:
