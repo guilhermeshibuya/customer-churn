@@ -8,7 +8,6 @@ from customer_churn.data import (
 )
 from customer_churn.preprocessing import (
     build_preprocessor,
-    fit_preprocessor,
     build_training_pipeline,
 )
 from customer_churn.train import build_model, train_model, save_model
