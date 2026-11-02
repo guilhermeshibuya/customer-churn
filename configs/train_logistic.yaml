@@ -1,0 +1,20 @@
+raw_data_path: data/raw/customer-churn-dataset.csv
+processed_data_path: data/processed
+model_output_path: models/customer_churn_logistic.joblib
+
+target_column: Churn
+id_column: customerID
+
+test_size: 0.1
+validation_size: 0.2
+random_state: 42
+cv_folds: 5
+
+tracking_uri: http://127.0.0.1:5000
+experiment_name: customer-churn
+
+model:
+  name: logistic_regression
+  params:
+    max_iter: 1000
+    class_weight: balanced
