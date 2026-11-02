@@ -10,8 +10,10 @@ from customer_churn.preprocessing import (
     build_preprocessor,
     build_training_pipeline,
 )
+from customer_churn.tracking import training_run, log_sklearn_model
 from customer_churn.train import build_model, train_model, save_model
 from customer_churn.evaluate import evaluate_model
+import mlflow
 
 
 def run_training_pipeline(config: Config) -> dict:
@@ -48,12 +50,18 @@ def run_training_pipeline(config: Config) -> dict:
     numerical_features = get_numerical_columns(X_train)
     preprocessor = build_preprocessor(categorical_features, numerical_features)
 
-    model = build_model(config.model)
-    pipeline = build_training_pipeline(preprocessor, model)
-    pipeline = train_model(pipeline, X_train, y_train)
+    with training_run(config, run_name=config.model.get("name")):
+        model = build_model(config.model)
+        pipeline = build_training_pipeline(preprocessor, model)
+        pipeline = train_model(pipeline, X_train, y_train)
 
-    eval_results = evaluate_model(pipeline, X_test, y_test)
-    print("Evaluation Results:", eval_results)
+        eval_results = evaluate_model(pipeline, X_test, y_test)
+        print("Evaluation Results:", eval_results)
+        mlflow.log_metrics(eval_results)
+
+        log_sklearn_model(
+            pipeline, X_example=X_train.head(5), registered_model_name="customer-churn"
+        )
 
     save_model(pipeline, config.model_output_path)
 

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import yaml
 
+
 @dataclass
 class Config:
     raw_data_path: str | Path
@@ -14,6 +15,8 @@ class Config:
     random_state: int
     cv_folds: int
     model: dict
+    tracking_uri: str = "http://127.0.0.1:5000"
+    experiment_name: str = "customer-churn"
 
     def __post_init__(self):
         if not (0 < self.test_size < 1):
@@ -33,7 +36,7 @@ class Config:
         if not path.exists():
             raise FileNotFoundError(f"The config file at {path} was not found.")
 
-        with open(path, 'r') as file:
+        with open(path, "r") as file:
             data = yaml.safe_load(file)
 
         if not isinstance(data, dict):
